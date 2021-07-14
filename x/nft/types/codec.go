@@ -27,6 +27,8 @@ func RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
 	nfttypes.RegisterLegacyAminoCodec(cdc)
 	cdc.RegisterConcrete(&MsgCreateAdmin{}, "nft/MsgCreateAdmin", nil)
 	cdc.RegisterConcrete(&MsgRevokeAdmin{}, "nft/MsgRevokeAdmin", nil)
+	cdc.RegisterConcrete(MsgIssueCertificate{}, "nft/IssueCertificate", nil)
+	cdc.RegisterConcrete(MsgRevokeCertificate{}, "nft/RevokeCertificate", nil)
 }
 
 func RegisterInterfaces(registry types.InterfaceRegistry) {
@@ -38,6 +40,8 @@ func RegisterInterfaces(registry types.InterfaceRegistry) {
 		&nfttypes.MsgBurnNFT{},
 		&MsgCreateAdmin{},
 		&MsgRevokeAdmin{},
+		&MsgIssueCertificate{},
+		&MsgRevokeCertificate{},
 	)
 
 	registry.RegisterImplementations((*exported.NFT)(nil),

@@ -10,3 +10,12 @@ option (gogoproto.stable_marshaler_all) = true;
 message Admin {
   string address = 1;
 }
+
+message Certificate {
+  option (gogoproto.equal) = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string content = 1;
+  string description = 2;
+  string certifier = 3;
+}

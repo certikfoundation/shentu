@@ -2,6 +2,7 @@ syntax = "proto3";
 package shentu.nft.v1alpha1;
 
 import "gogoproto/gogo.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
 import "google/api/annotations.proto";
 import "irismod/nft/query.proto";
 import "shentu/nft/v1alpha1/nft.proto";
@@ -47,6 +48,14 @@ service Query {
   rpc Admins(QueryAdminsRequest) returns (QueryAdminsResponse) {
     option (google.api.http).get = "/shentu/nft/v1alpha1/admins";
   }
+
+  rpc Certificate(QueryCertificateRequest) returns (QueryCertificateResponse) {
+    option (google.api.http).get = "/shentu/nft/v1alpha1/certificate/{denom_id}/{token_id}";
+  }
+
+  rpc Certificates(QueryCertificatesRequest) returns (QueryCertificatesResponse) {
+      option (google.api.http).get = "/shentu/nft/v1alpha1/certificates/{denom_id}";
+  }
 }
 
 message QueryAdminRequest {
@@ -61,4 +70,26 @@ message QueryAdminsRequest {}
 
 message QueryAdminsResponse {
   repeated shentu.nft.v1alpha1.Admin admins = 1 [ (gogoproto.nullable) = false ];
+}
+
+message QueryCertificateRequest {
+  string denom_id = 1;
+  string token_id = 2;
+}
+
+message QueryCertificateResponse {
+  Certificate certificate = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryCertificatesRequest {
+  string certifier = 1;
+  string denom_id = 2;
+
+  // pagination defines an optional pagination for the request.
+  cosmos.base.query.v1beta1.PageRequest pagination = 3;
+}
+
+message QueryCertificatesResponse {
+  uint64 total = 1;
+  repeated QueryCertificateResponse certificates = 2 [(gogoproto.nullable) = false];
 }

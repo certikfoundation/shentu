@@ -1,6 +1,8 @@
 package types
 
-import sdk "github.com/cosmos/cosmos-sdk/types"
+import (
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
 
 const (
 	// ModuleName is the name of this module
@@ -17,9 +19,15 @@ const (
 )
 
 var (
-	AdminKeyPrefix = []byte{0x10}
+	AdminKeyPrefix             = []byte{0x10}
+	nextCertificateIDKeyPrefix = []byte{0x11}
 )
 
 func AdminKey(addr sdk.AccAddress) []byte {
 	return append(AdminKeyPrefix, addr...)
+}
+
+// NextCertificateIDStoreKey returns the kv-store key for next certificate ID to assign.
+func NextCertificateIDStoreKey() []byte {
+	return nextCertificateIDKeyPrefix
 }

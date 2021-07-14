@@ -88,3 +88,138 @@ func (m MsgRevokeAdmin) GetSigners() []sdk.AccAddress {
 	}
 	return []sdk.AccAddress{proposerAddr}
 }
+
+// NewMsgIssueCertificate returns a new certification message.
+func NewMsgIssueCertificate(denomID, tokenID, name, uri, content, description string, certifier sdk.AccAddress) *MsgIssueCertificate {
+	return &MsgIssueCertificate{
+		DenomId:     denomID,
+		TokenId:     tokenID,
+		Name:        name,
+		Uri:         uri,
+		Content:     content,
+		Description: description,
+		Certifier:   certifier.String(),
+	}
+}
+
+// Route returns the module name.
+func (m MsgIssueCertificate) Route() string { return ModuleName }
+
+// Type returns the action name.
+func (m MsgIssueCertificate) Type() string { return "issue_certificate" }
+
+// ValidateBasic runs stateless checks on the message.
+func (m MsgIssueCertificate) ValidateBasic() error {
+	certifierAddr, err := sdk.AccAddressFromBech32(m.Certifier)
+	if err != nil {
+		panic(err)
+	}
+	if certifierAddr.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, certifierAddr.String())
+	}
+	return nil
+}
+
+// GetSignBytes encodes the message for signing.
+func (m MsgIssueCertificate) GetSignBytes() []byte {
+	bz := ModuleCdc.MustMarshalJSON(&m)
+	return sdk.MustSortJSON(bz)
+}
+
+// GetSigners defines whose signature is required.
+func (m MsgIssueCertificate) GetSigners() []sdk.AccAddress {
+	certifierAddr, err := sdk.AccAddressFromBech32(m.Certifier)
+	if err != nil {
+		panic(err)
+	}
+	return []sdk.AccAddress{certifierAddr}
+}
+
+// NewMsgIssueCertificate returns a new certification message.
+func NewMsgEditCertificate(denomID, tokenID, name, uri, content, description string, owner sdk.AccAddress) *MsgEditCertificate {
+	return &MsgEditCertificate{
+		DenomId:     denomID,
+		TokenId:     tokenID,
+		Name:        name,
+		Uri:         uri,
+		Content:     content,
+		Description: description,
+		Owner:       owner.String(),
+	}
+}
+
+// Route returns the module name.
+func (m MsgEditCertificate) Route() string { return ModuleName }
+
+// Type returns the action name.
+func (m MsgEditCertificate) Type() string { return "edit_certificate" }
+
+// ValidateBasic runs stateless checks on the message.
+func (m MsgEditCertificate) ValidateBasic() error {
+	ownerAddr, err := sdk.AccAddressFromBech32(m.Owner)
+	if err != nil {
+		panic(err)
+	}
+	if ownerAddr.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, ownerAddr.String())
+	}
+	return nil
+}
+
+// GetSignBytes encodes the message for signing.
+func (m MsgEditCertificate) GetSignBytes() []byte {
+	bz := ModuleCdc.MustMarshalJSON(&m)
+	return sdk.MustSortJSON(bz)
+}
+
+// GetSigners defines whose signature is required.
+func (m MsgEditCertificate) GetSigners() []sdk.AccAddress {
+	ownerAddr, err := sdk.AccAddressFromBech32(m.Owner)
+	if err != nil {
+		panic(err)
+	}
+	return []sdk.AccAddress{ownerAddr}
+}
+
+// NewMsgRevokeCertificate creates a new instance of MsgRevokeCertificate.
+func NewMsgRevokeCertificate(denomID, tokenID, description string, revoker sdk.AccAddress) *MsgRevokeCertificate {
+	return &MsgRevokeCertificate{
+		DenomId:     denomID,
+		TokenId:     tokenID,
+		Revoker:     revoker.String(),
+		Description: description,
+	}
+}
+
+// ValidateBasic runs stateless checks on the message.
+func (m MsgRevokeCertificate) ValidateBasic() error {
+	revokerAddr, err := sdk.AccAddressFromBech32(m.Revoker)
+	if err != nil {
+		panic(err)
+	}
+	if revokerAddr.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, revokerAddr.String())
+	}
+	return nil
+}
+
+// Route returns the module name.
+func (m MsgRevokeCertificate) Route() string { return ModuleName }
+
+// Type returns the action name.
+func (m MsgRevokeCertificate) Type() string { return "revoke_certificate" }
+
+// GetSignBytes encodes the message for signing.
+func (m MsgRevokeCertificate) GetSignBytes() []byte {
+	bz := ModuleCdc.MustMarshalJSON(&m)
+	return sdk.MustSortJSON(bz)
+}
+
+// GetSigners defines whose signature is required.
+func (m MsgRevokeCertificate) GetSigners() []sdk.AccAddress {
+	revokerAddr, err := sdk.AccAddressFromBech32(m.Revoker)
+	if err != nil {
+		panic(err)
+	}
+	return []sdk.AccAddress{revokerAddr}
+}
